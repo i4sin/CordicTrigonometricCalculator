@@ -4,7 +4,7 @@
 import vunit_pkg::*;
 `include "vunit_defines.svh"
 
-module SimpleSequenceDetector_tb();
+module CordicAtanCalculator_tb();
     localparam TOTAL_WORDS_COUNT = 100000;
 
     typedef logic logic_array[$];
@@ -28,7 +28,7 @@ module SimpleSequenceDetector_tb();
     logic input_valid;
     logic output_detected;
 
-    SimpleSequenceDetector sequenceDetector(
+    CordicAtanCalculator sequenceDetector(
         .clk(clk),
         .resetn(resetn),
         .seq(input_seq),

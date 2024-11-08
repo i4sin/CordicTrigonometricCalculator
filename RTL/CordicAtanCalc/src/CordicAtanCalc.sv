@@ -1,4 +1,4 @@
-module SimpleSequenceDetector(
+module CordicAtanCalculator(
     input clk,
     input resetn,
 

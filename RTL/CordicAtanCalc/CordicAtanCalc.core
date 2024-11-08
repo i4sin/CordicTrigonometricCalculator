@@ -1,18 +1,18 @@
 CAPI=2: 2
 
-name: Yasin:VLSI:SimpleSequenceDetector
-description: Simple SimpleSequenceDetector
+name: Yasin:VLSI:CordicAtanCalculator
+description: Simple CordicAtanCalculator
 
 filesets:
   rtl_files:
     files:
-      - src/SimpleSequenceDetector.sv
+      - src/CordicAtanCalculator.sv
     file_type: systemVerilogSource
 
   tb_files:
     logical_name: tb_lib
     files:
-      - test/SimpleSequenceDetector_tb.sv
+      - test/CordicAtanCalculator_tb.sv
       # - test/Word.sv: {is_include_file: true}
 
     file_type: systemVerilogSource
