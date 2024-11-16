@@ -59,14 +59,20 @@ module CordicAtanCalculator_tb();
         end
     endfunction
 
-    function data_width_logic expect_angle(dual_logic_array array);//todo
+    function data_width_logic expect_angle(dual_logic_array array);
+        real expected_angle_in_float;
         data_width_logic expected_angle;
+        expected_angle_in_float = $atan(real'(array[1])/array[0]);
+        expect_angle = expected_angle_in_float * (1 << 16);
         $display("expected_angle:\n %p", expected_angle);
         return expected_angle;
     endfunction
 
-    function logic_sequence expect_angles(dual_logic_sequence seq); //todo
+    function logic_sequence expect_angles(dual_logic_sequence seq);
         logic_sequence expected_angles;
+        for (int i = 0; i < TOTAL_WORDS_COUNT; i++) begin
+            expect_angles.push_back(expect_angle(seq.pop_front()));
+        end
         $display("expected_angles:\n %p", expected_angles);
         return expected_angles;
     endfunction
@@ -77,7 +83,7 @@ module CordicAtanCalculator_tb();
         @(posedge clk);
     endtask
 
-    task check_output(data_width_logic current_expected_angle);        
+    task check_output(data_width_logic current_expected_angle);
         assert (output_angle == current_expected_angle) begin
             $display("x: %h, y: %h, angle: %h, expected_angle: %h",
                         input_x, input_y, output_angle, current_expected_angle);
@@ -87,6 +93,9 @@ module CordicAtanCalculator_tb();
 
     `TEST_SUITE begin
         `TEST_CASE_SETUP begin
+            automatic real atan = 0.607252935008881;//$atan(1)*180/3.14;
+            $display("atan: %b", atan * (1 << 16));
+            assert(0);
             resetn <= 0;
             repeat(6) @(posedge clk);
             resetn <= 1;
@@ -99,6 +108,7 @@ module CordicAtanCalculator_tb();
 
             for (int i = 0; i < TOTAL_WORDS_COUNT; i++) begin
                 drive_input(generated_sequence.pop_front());
+                wait(output_valid);
                 check_output(expected_angles.pop_front());
             end
         end

@@ -9,7 +9,7 @@ module CordicAtanCalculator #(
     output logic valid,
     output logic [DATA_WIDTH-1:0] angle
 );
-    localparam real K_FACTOR = 0.607252935008881;
+    localparam logic [DATA_WIDTH-1:0] K_FACTOR = 32'b00000000000000001001101101110101;
 
     logic [DATA_WIDTH-1:0] atan_table [15:0];
 
@@ -17,22 +17,22 @@ module CordicAtanCalculator #(
     logic [DATA_WIDTH-1:0] y_reg [NUM_ITERATIONS-1:0];
     logic [DATA_WIDTH-1:0] z_reg [NUM_ITERATIONS-1:0];
 
-    assign atan_table[0] = 45 * (1 << 16);
-    assign atan_table[1] = 26.565 * (1 << 16);
-    assign atan_table[2] = 14.036243467 * (1 << 16);
-    assign atan_table[3] = 7.125 * (1 << 16);
-    assign atan_table[4] = 3.576 * (1 << 16);
-    assign atan_table[5] = 1.790 * (1 << 16);
-    assign atan_table[6] = 0.895 * (1 << 16);
-    assign atan_table[7] = 0.447 * (1 << 16);
-    assign atan_table[8] = 0.224 * (1 << 16);
-    assign atan_table[9] = 0.112 * (1 << 16);
-    assign atan_table[10] = 0.057 * (1 << 16);
-    assign atan_table[11] = 0.028 * (1 << 16);
-    assign atan_table[12] = 0.014 * (1 << 16);
-    assign atan_table[13] = 0.007 * (1 << 16);
-    assign atan_table[14] = 0.004 * (1 << 16);
-    assign atan_table[15] = 0.002 * (1 << 16);
+    assign atan_table[0]  = 32'b00000000001011010000000000000000;
+    assign atan_table[1]  = 32'b00000000000110101001000010100100;
+    assign atan_table[2]  = 32'b00000000000011100000100101000111;
+    assign atan_table[3]  = 32'b00000000000001110010000000000000;
+    assign atan_table[4]  = 32'b00000000000000111001001101110101;
+    assign atan_table[5]  = 32'b00000000000000011100101000111101;
+    assign atan_table[6]  = 32'b00000000000000001110010100011111;
+    assign atan_table[7]  = 32'b00000000000000000111001001101111;
+    assign atan_table[8]  = 32'b00000000000000000011100101011000;
+    assign atan_table[9]  = 32'b00000000000000000001110010101100;
+    assign atan_table[10] = 32'b00000000000000000000111010011000;
+    assign atan_table[11] = 32'b00000000000000000000011100101011;
+    assign atan_table[12] = 32'b00000000000000000000001110010110;
+    assign atan_table[13] = 32'b00000000000000000000000111001011;
+    assign atan_table[14] = 32'b00000000000000000000000100000110;
+    assign atan_table[15] = 32'b00000000000000000000000010000011;
 
     always_ff @(posedge clk or negedge resetn) begin
         if (!resetn) begin
