@@ -34,14 +34,13 @@ module CordicAtanCalculator #(
     assign atan_table[14] = 0.004 * (1 << 16);
     assign atan_table[15] = 0.002 * (1 << 16);
 
-    assign x_reg[0] = x;
-    assign y_reg[0] = y;
-    assign z_reg[0] = 0;
-
     always_ff @(posedge clk or negedge resetn) begin
         if (!resetn) begin
             valid <= 0;
             angle <= 0;
+            x_reg[0] = x;
+            y_reg[0] = y;
+            z_reg[0] = 0;
         end else begin
             valid <= 0;
             angle <= 0;

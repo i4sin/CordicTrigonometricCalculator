@@ -4,17 +4,9 @@
 import vunit_pkg::*;
 `include "vunit_defines.svh"
 
-module CordicAtanCalculator_tb #(
-
-) (
-    
-);
-endmodule
-
 module CordicAtanCalculator_tb();
-    parameter DATA_WIDTH = 0;
-    parameter NUM_ITERATIONS = 0;
-
+    localparam DATA_WIDTH = 32;
+    localparam NUM_ITERATIONS = 16;
     localparam TOTAL_WORDS_COUNT = 100000;
 
     typedef logic [DATA_WIDTH-1:0] data_width_logic;
@@ -34,7 +26,10 @@ module CordicAtanCalculator_tb();
     dual_logic_sequence generated_sequence;
     logic_sequence expected_angles;
     
-    CordicAtanCalculator cordic_atan_calculator(
+    CordicAtanCalculator #(
+        .DATA_WIDTH(DATA_WIDTH),
+        .NUM_ITERATIONS(NUM_ITERATIONS)
+    ) cordic_atan_calculator(
         .clk(clk),
         .resetn(resetn),
         .x(input_x),
@@ -43,7 +38,7 @@ module CordicAtanCalculator_tb();
         .angle(output_angle)
     );
 
-    function automatic dual_logic_array generate_random_x_y_array();
+    function dual_logic_array generate_random_x_y_array();
         real x, y;
         data_width_logic x_logic, y_logic;
         dual_logic_array dual_logic_array;
@@ -57,23 +52,23 @@ module CordicAtanCalculator_tb();
         return dual_logic_array;
     endfunction
 
-    function automatic dual_logic_sequence generate_random_x_y_sequence();
+    function dual_logic_sequence generate_random_x_y_sequence();
         dual_logic_sequence dual_logic_sequence;
         for (int i = 0; i < TOTAL_WORDS_COUNT; i++) begin
             dual_logic_sequence.push_back(generate_random_x_y_array());
         end
     endfunction
 
-    function automatic data_width_logic expect_angle(dual_logic_array array);//todo
-        dual_logic_array expected_detected_array;
-        $display("expected_detected_array:\n %p", expected_detected_array);
-        return expected_detected_array;
+    function data_width_logic expect_angle(dual_logic_array array);//todo
+        data_width_logic expected_angle;
+        $display("expected_angle:\n %p", expected_angle);
+        return expected_angle;
     endfunction
 
-    function automatic logic_sequence expect_angles(dual_logic_sequence seq); //todo
-        dual_logic_sequence expected_detected_sequence;
-        $display("expected_detected_sequence:\n %p", expected_detected_sequence);
-        return expected_detected_sequence;
+    function logic_sequence expect_angles(dual_logic_sequence seq); //todo
+        logic_sequence expected_angles;
+        $display("expected_angles:\n %p", expected_angles);
+        return expected_angles;
     endfunction
 
     task drive_input(dual_logic_array array);
@@ -90,7 +85,7 @@ module CordicAtanCalculator_tb();
                                                                 output_angle, current_expected_angle);
     endtask
 
-    `TEST_SUITE_FROM_PARAMETER(runner_config) begin
+    `TEST_SUITE begin
         `TEST_CASE_SETUP begin
             resetn <= 0;
             repeat(6) @(posedge clk);
